@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10 
+          python-version: '3.10' 
 
       - name: Install dependencies
         run: |
@@ -26,9 +26,10 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key.pem
           chmod 600 deploy_key.pem
           ssh -i deploy_key.pem -o StrictHostKeyChecking=no ubuntu@18.222.172.175 << 'EOF'
-            cd <your-repo-folder>
+            cd fastapi-book-project
             git pull origin main
             source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
             sudo systemctl restart gunicorn
             sudo systemctl restart nginx
